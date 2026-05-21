@@ -83,7 +83,7 @@ Le projet inclut également :
 ## Configuration de la base de données
 
 1. Créer une base de données dans phpMyAdmin.
-   - Exemple : `authsys_db`
+   - Exemple : `auth_tp`
 2. Exécuter la requête SQL suivante pour créer la table `utilisateurs` :
 
 ```sql
@@ -164,6 +164,7 @@ Ajoute ici des images pour :
 
 ## Auteur
 
+- Nom : Sayed hussein
 - GitHub : https://github.com/Hashidaru978
 
 ## Licence
