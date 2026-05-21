@@ -1,4 +1,4 @@
-# 🔐 AuthSys PHP
+# AuthSys PHP
 
 Un système d’authentification moderne en PHP/MySQL conçu pour XAMPP, avec gestion des utilisateurs, sécurité renforcée et administration.
 
@@ -6,24 +6,33 @@ Un système d’authentification moderne en PHP/MySQL conçu pour XAMPP, avec ge
 
 ## Description
 
-Ce projet implémente un système d’authentification complet en PHP 8 et MySQL. Il offre un parcours utilisateur sécurisé pour l’inscription, la connexion, la gestion de profil et la réinitialisation de mot de passe, tout en protégeant les routes sensibles et en incluant un panel admin.
+Ce projet implémente un système d’authentification complet en PHP 8 et MySQL.
+
+Il offre un parcours utilisateur sécurisé pour :
+
+- l’inscription
+- la connexion
+- la gestion de profil
+- la réinitialisation de mot de passe
+
+Le projet inclut également :
+- une protection des routes privées
+- un système de sécurité contre les tentatives de connexion abusives
+- un espace administrateur
+
 
 ---
 
-## Fonctionnalités principales
+## Fonctionnalités clés
 
-- ✅ Inscription utilisateur
-- ✅ Connexion sécurisée
-- ✅ Déconnexion
-- ✅ Sessions PHP pour garder l’utilisateur connecté
-- ✅ Hashage des mots de passe avec `password_hash`
-- ✅ Reset de mot de passe par token sécurisé
-- ✅ Blocage de compte après 5 tentatives erronées
-- ✅ Option “Se souvenir de moi”
-- ✅ Upload de photo de profil
-- ✅ Gestion du profil utilisateur
-- ✅ Panel admin
-- ✅ Protection des routes accessibles seulement aux utilisateurs connectés
+- Inscription sécurisée avec validation côté serveur
+- Connexion avec gestion de session PHP
+- Déconnexion et purge des données de session
+- Réinitialisation de mot de passe via token expirant
+- Téléversement d’avatar utilisateur dans `uploads/`
+- Protection des pages privées pour les utilisateurs authentifiés
+- Requêtes préparées PDO pour toutes les interactions SQL
+- Contrôle de rôle basique (admin / user)
 
 ---
 
@@ -61,22 +70,40 @@ Ce projet implémente un système d’authentification complet en PHP 8 et MySQL
 
 ---
 
-## Installation avec XAMPP
+## Installation
 
-1. Télécharge et installe XAMPP.
-2. Copie le dossier du projet dans `C:\xampp\htdocs\`.
-3. Lance Apache et MySQL depuis le panneau de contrôle XAMPP.
-4. Ouvre ton navigateur et va sur :
+1. Installer XAMPP avec Apache et MySQL.
+2. Copier le projet dans `C:\xampp\htdocs\dossierprincipal`.
+3. Démarrer Apache et MySQL via le panneau XAMPP.
+4. Accéder à l’application depuis le navigateur :
    - `http://localhost/dossierprincipal/`
 
 ---
 
 ## Configuration de la base de données
 
-1. Ouvre `http://localhost/phpmyadmin/`.
-2. Crée une base de données, par exemple : `authsys_db`.
-3. Exécute le script SQL pour créer les tables nécessaires.
-4. Modifie `config/connexion.php` avec tes informations :
+1. Créer une base de données dans phpMyAdmin.
+   - Exemple : `authsys_db`
+2. Exécuter la requête SQL suivante pour créer la table `utilisateurs` :
+
+```sql
+CREATE TABLE utilisateurs (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  prenom VARCHAR(100) NOT NULL,
+  nom VARCHAR(100) NOT NULL,
+  email VARCHAR(180) NOT NULL UNIQUE,
+  mot_de_passe VARCHAR(255) NOT NULL,
+  photo_profil VARCHAR(255) DEFAULT NULL,
+  role VARCHAR(50) DEFAULT 'user',
+  tentatives_connexion INT DEFAULT 0,
+  compte_bloque_jusqua DATETIME DEFAULT NULL,
+  reset_token VARCHAR(255) DEFAULT NULL,
+  reset_expiration DATETIME DEFAULT NULL,
+  date_inscription DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+3. Mettre à jour `config/connexion.php` avec les paramètres de connexion MySQL :
 
 ```php
 <?php
@@ -84,62 +111,61 @@ $host = 'localhost';
 $db   = 'authsys_db';
 $user = 'root';
 $pass = '';
-$dsn  = "mysql:host=$host;dbname=$db;charset=utf8mb4";
+$charset = 'utf8mb4';
+$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+$options = [
+  PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+  PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+  PDO::ATTR_EMULATE_PREPARES => false,
+];
 
 try {
-    $pdo = new PDO($dsn, $user, $pass, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    ]);
+  $pdo = new PDO($dsn, $user, $pass, $options);
 } catch (PDOException $e) {
-    die('Erreur de connexion : ' . $e->getMessage());
+  die('Connexion base de données impossible : ' . $e->getMessage());
 }
 ```
 
-5. Assure-toi que les tables suivantes sont présentes :
-   - `users`
-   - `password_resets`
-   - `login_attempts`
+4. Vérifier que les tables suivantes existent :
+   - `utilisateurs`
 
 ---
 
-## Commandes Git utiles
+## Utilisation Git
 
 ```bash
-git status
-
-git add .
-git commit -m "Ajout d'une fonctionnalité"
+git add README.md .gitignore
+git commit -m "Mise à jour du README"
 git push origin main
-
-git pull origin main
-
-git checkout -b feature/nom-du-feature
 ```
 
 ---
 
 ## Sécurité
 
-- Utiliser `password_hash()` et `password_verify()` pour sécuriser les mots de passe.
-- Protéger les routes avec des vérifications de session.
-- Bloquer l’accès après 5 tentatives de connexion échouées.
-- Empêcher l’accès aux pages administrateur sans authentification.
-- Ne jamais stocker les mots de passe en clair.
-- Ignorer les fichiers de configuration sensibles (`.env`) avec `.gitignore`.
+- Hachage des mots de passe avec `password_hash()`.
+- Vérification des connexions avec `password_verify()`.
+- Requêtes préparées PDO pour toutes les opérations SQL.
+- Vérification de session sur chaque page privée.
+- Protection contre les accès non autorisés.
+- Ne pas inclure de configurations sensibles dans le dépôt.
 
 ---
 
 ## Captures d’écran
 
-> Ajoute ici des captures d’écran du projet (connexion, profil, admin, formulaire de reset) une fois disponibles.
+Ajoute ici des images pour :
+- la page de connexion
+- la page profil
+- la page de réinitialisation de mot de passe
+- l’interface admin
 
 ---
 
 ## Auteur
 
-**Nom** : [Ton Nom]
+- GitHub : https://github.com/Hashidaru978
 
-**GitHub** : [https://github.com/Hashidaru978](https://github.com/Hashidaru978)
+## Licence
 
-**Description** : Développeur PHP/MySQL, spécialisé dans les applications web sécurisées.
+Projet éducatif pour l’apprentissage PHP/MySQL.
