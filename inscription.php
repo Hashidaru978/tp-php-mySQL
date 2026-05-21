@@ -1,5 +1,5 @@
 <?php 
-session_start(); // Demarrer la session pour afficher les messages 
+session_start(); // Demarrer la session pour afficher les messages  
 ?> 
 <!DOCTYPE html> 
 <html lang="fr"> 
