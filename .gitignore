@@ -1,0 +1,81 @@
+# Node dependencies
+node_modules/
+
+# PHP dependencies
+vendor/
+
+# Runtime and environment files
+.env
+.env.*
+.phpunit.result.cache
+
+# Uploads and generated content
+uploads/
+.cache/
+cache/
+
+# Local development and runtime files
+*.log
+*.log.*
+*.tmp
+*.temp
+*.swp
+*.swo
+*.bak
+*.old
+*.orig
+
+# XAMPP / Apache / PHP local files
+*.pid
+*.pid.lock
+*.session
+
+# IDE and editor folders
+.vscode/
+.idea/
+*.iml
+
+# History and backup folders
+.history/
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows system files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Composer and package manager artifacts
+composer.lock
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+pnpm-lock.yaml
+
+# PHPStorm metadata
+.phpstorm.meta.php
+
+# Temporary folders and files
+tmp/
+temp/
+*.cache
+
+# Database dump or export files (optional)
+*.sql
+*.sqlite
+*.sqlite3
+
+# Other OS/editor temporary files
+*~
+~*
+
+# Avoid accidentally committing certificates or keys
+*.pem
+*.key
+*.crt
