@@ -4,7 +4,7 @@ session_start();
 
 require_once 'config/connexion.php';
 
-/* ── Protection connexion ───────────────────── */
+/* ── Protection connexion ──────────────────── */
 
 if (empty($_SESSION['utilisateur_id'])) {
 
