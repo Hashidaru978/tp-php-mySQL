@@ -33,7 +33,7 @@ $stmt->execute([
 
 $user = $stmt->fetch();
 
-/* ── Utilisateur inexistant ────────────────── */
+/* ── Utilisateur inexistant ───────────────── */
 
 if (!$user) {
 
