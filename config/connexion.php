@@ -26,7 +26,7 @@ try {
     $pdo = new PDO($dsn, $user, $pass, $options); 
     // Si on arrive ici, la connexion est OK 
 } catch (PDOException $e) { 
-    // En cas d'erreur, on affiche un message generique 
+    // En cas d'erreur, on affiche un message generique.
     // (ne jamais afficher $e->getMessage() en production !) 
     die("Erreur : Impossible de se connecter a la base de donnees."); 
 }
