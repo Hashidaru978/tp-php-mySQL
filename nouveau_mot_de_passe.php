@@ -2,7 +2,7 @@
 
 require_once 'config/connexion.php';
 
-$token = $_GET['token'] ?? '';
+$token = $_GET['token'] ?? ''; 
 
 $stmt = $pdo->prepare(
     "SELECT id
