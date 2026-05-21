@@ -6,7 +6,7 @@ require_once 'config/connexion.php';
 
 /* ── Protection page ───────────────────────────── */
 
-if (empty($_SESSION['utilisateur_id'])) {
+if (empty($_SESSION['utilisateur_id'])) { 
 
     header('Location: connexion.php');
     exit;
