@@ -2,7 +2,7 @@
 
     <p>
 
-        © <?= date('Y') ?> MonSite - Tous droits reserves
+        © <?= date('Y') ?> MonSite - Tous droits reserves 
 
     </p>
 
