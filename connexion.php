@@ -2,7 +2,7 @@
 
 session_start();
 
-/* ── Cookie souvenir ────────────────────────── */
+/* ── Cookie souvenir ──────────────────────────*/
 
 if (
     empty($_SESSION['utilisateur_id']) &&
